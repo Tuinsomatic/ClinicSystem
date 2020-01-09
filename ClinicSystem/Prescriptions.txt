@@ -1,0 +1,3 @@
+PatientID/MedicineID/Amount/Dosage
+P1/2/6/2 per day
+P2/3/5/1 per day
