@@ -1,6 +1,5 @@
 package gui;
 
-import java.awt.Component;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.table.DefaultTableModel;
+import gui.PatientInterface;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -84,6 +83,37 @@ public class Login extends javax.swing.JFrame {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, exception);
         }
         return false;
+    }
+    
+    public void SwitchToPatient(String id){
+        PatientInterface p = new PatientInterface();
+        p.setPatientID(usernameField.getText());
+        System.out.println("wwwwww " + p.patientID);
+        p.getAppointments();
+        p.getDoctorRatings();
+        p.setVisible(true);
+        this.dispose();
+    }
+    
+    public void SwitchToSecretary(String id){
+        SecretaryInterface p = new SecretaryInterface();
+        p.secretaryID = usernameField.getText();
+        p.setVisible(true);
+        this.dispose();
+    }
+    
+    public void SwitchToDoctor(String id){
+        DoctorInterface p = new DoctorInterface();
+        p.doctorID = usernameField.getText();
+        p.setVisible(true);
+        this.dispose();
+    }
+    
+    public void SwitchToAdministrator(String id){
+        AdminInterface p = new AdminInterface();
+        p.adminID = usernameField.getText();
+        p.setVisible(true);
+        this.dispose();
     }
 
     /**
@@ -198,17 +228,22 @@ public class Login extends javax.swing.JFrame {
             String row = userTableRows[userRow].toString().trim();
             String[] collectedRow = row.split("/");
             System.out.println(collectedRow[0]);
+            
             if ("Patient".equals(collectedRow[0])){
                 System.out.println("Patient");
+                SwitchToPatient(usernameField.getText());
             }
             else if ("Administrator".equals(collectedRow[0])){
                 System.out.println("Admin");
+                SwitchToAdministrator(usernameField.getText());
             }
             else if ("Secretary".equals(collectedRow[0])){
                 System.out.println("Secretary");
+                SwitchToSecretary(usernameField.getText());
             }
             else{
                 System.out.println("Doctor");
+                SwitchToDoctor(usernameField.getText());
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
