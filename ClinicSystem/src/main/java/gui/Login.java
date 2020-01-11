@@ -23,7 +23,7 @@ import gui.PatientInterface;
  */
 public class Login extends javax.swing.JFrame {
 
-    public Integer userRow = null; 
+    public String userType = null; 
     /**
      * Creates new form Login
      */
@@ -56,21 +56,21 @@ public class Login extends javax.swing.JFrame {
         }
     }
     
-    public Boolean CheckCredentials(String id, String pw){
+    public Boolean CheckCredentials(String id, String pw){ //id = usernameTextField.getText(), pw = passwordTextField.getText()
         String userFile = "Accounts.txt";
         File users = new File(userFile);
         
         try{
             BufferedReader reader = new BufferedReader(new FileReader(users));
-            Object[] userTableRows = reader.lines().toArray();
+            Object[] userTableRows = reader.lines().toArray(); //put all rows into an array
             
-            for(int i=0; i<userTableRows.length; i++){
+            for(int i=0; i<userTableRows.length; i++){ //for each row...
                 String row = userTableRows[i].toString().trim();
-                String[] collectedRow = row.split("/");
-                for(int j=0; j<collectedRow.length; j++){
-                    if (collectedRow[j].equals(id) && collectedRow[j+1].equals(pw)){
+                String[] collectedRow = row.split("/"); //... split each datum into another array, splitting them at "/"
+                for(int j=0; j<collectedRow.length; j++){ //for each string in row i...
+                    if (collectedRow[j].equals(id) && collectedRow[j+1].equals(pw)){ //if one string = id AND the one after it = pw...
                         //System.out.println("Success");
-                        userRow = i;
+                        userType = collectedRow[0]; //...select the current row and save it for later
                         return true;
                     }
                     else{
@@ -85,12 +85,12 @@ public class Login extends javax.swing.JFrame {
         return false;
     }
     
-    public void SwitchToPatient(String id){
+    public void SwitchToPatient(String id){ //do this for all user types
         PatientInterface p = new PatientInterface();
         p.setPatientID(usernameField.getText());
         System.out.println("wwwwww " + p.patientID);
         p.getAppointments();
-        p.getDoctorRatings();
+        p.getDoctorRatings(); //put all the "read" functions for the corresponding user type here
         p.setVisible(true);
         this.dispose();
     }
@@ -218,26 +218,18 @@ public class Login extends javax.swing.JFrame {
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         CheckCredentials(usernameField.getText(), passwordField.getText());
-        
-        String userFile = "Accounts.txt";
-        File users = new File(userFile);
-        BufferedReader reader;
-        try {
-            reader = new BufferedReader(new FileReader(users));
-            Object[] userTableRows = reader.lines().toArray();
-            String row = userTableRows[userRow].toString().trim();
-            String[] collectedRow = row.split("/");
-            System.out.println(collectedRow[0]);
+
+            System.out.println(userType);
             
-            if ("Patient".equals(collectedRow[0])){
+            if ("Patient".equals(userType)){
                 System.out.println("Patient");
                 SwitchToPatient(usernameField.getText());
             }
-            else if ("Administrator".equals(collectedRow[0])){
+            else if ("Administrator".equals(userType)){
                 System.out.println("Admin");
                 SwitchToAdministrator(usernameField.getText());
             }
-            else if ("Secretary".equals(collectedRow[0])){
+            else if ("Secretary".equals(userType)){
                 System.out.println("Secretary");
                 SwitchToSecretary(usernameField.getText());
             }
@@ -245,9 +237,6 @@ public class Login extends javax.swing.JFrame {
                 System.out.println("Doctor");
                 SwitchToDoctor(usernameField.getText());
             }
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
     }//GEN-LAST:event_loginButtonActionPerformed
 
