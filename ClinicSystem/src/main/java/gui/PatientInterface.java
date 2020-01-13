@@ -17,189 +17,125 @@ import java.util.*;
  *
  * @author rowse
  */
-public class PatientInterface extends javax.swing.JFrame {
-    
-    public String patientID;
-    public String firstName;
-    public String secondName;
-    public String address;
-    public String postcode;
-    public String age;
-    public String gender;
+public class PatientInterface extends User {
 
     /**
      * Creates new form PatientInterface
      */
     public PatientInterface() {
         initComponents();
-        getAppointments();
         
-        
-        String userFile = "Accounts.txt";
-        File users = new File(userFile);
-        
-        try{
-            BufferedReader reader = new BufferedReader(new FileReader(users));
-            Object[] userTableRows = reader.lines().toArray();
+        readFile("Accounts.txt");
             
-            for(int i=0; i<userTableRows.length; i++){
-                String row = userTableRows[i].toString().trim();
-                String[] collectedRow = row.split("/");
-                for(int j=0; j<collectedRow.length; j++){
-                    if (collectedRow[j].equals(patientID)){
-                        collectedRow[3] = firstName;
-                        collectedRow[4] = secondName;
-                        collectedRow[5] = address;
-                        collectedRow[6] = postcode;
-                        collectedRow[7] = age;
-                        collectedRow[8] = gender;
-                        System.out.println(collectedRow);
-                    }
-                    else{
-                        //System.out.println("Fail");
-                    }
+        for(int i=0; i<tableRows.length; i++){
+            String row = tableRows[i].toString().trim();
+            String[] collectedRow = row.split("/");
+            for(int j=0; j<collectedRow.length; j++){
+                if (collectedRow[j].equals(ID)){
+                    collectedRow[3] = forename;
+                    collectedRow[4] = surname;
+                    collectedRow[5] = address;
+                    collectedRow[6] = postcode;
+                    setAge(parseInt(collectedRow[7]));
+                    collectedRow[8] = gender;
+                }
+                else{
                 }
             }
         }
-        catch (Exception exception){
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, exception);
-        }
-    }
-
-    public String getPatientID() {
-        return patientID;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getSecondName() {
-        return secondName;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public String getPostcode() {
-        return postcode;
-    }
-
-    public String getAge() {
-        return age;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setPatientID(String patientID) {
-        this.patientID = patientID;
-    }
-    
-    
+    }  
     
     public void getAppointments(){
-        System.out.println(patientID);
-        String appFile = "Appointments.txt";
-        File appts = new File(appFile);
+        System.out.println(ID);
         
-        try{
-            BufferedReader reader = new BufferedReader(new FileReader(appts));
-            Object[] apptTableRows = reader.lines().toArray();
+        readFile("Appointments.txt");
             
-            for(int i=0; i<apptTableRows.length; i++){
-                String row = apptTableRows[i].toString().trim();
-                String[] collectedRow = row.split("/");
-                for(int j=0; j<collectedRow.length; j++){
-                    System.out.println(collectedRow[j]);
-                    if (collectedRow[j].equals(patientID)){
-                        String docID = collectedRow[1];
-                        System.out.println(docID);
-                        String date = collectedRow[2];
-                        System.out.println(date);
-                        appointments.append(docID + ", " + date + "\n");
-                    }
-                    else{
-                        //System.out.println("Fail");
-                    }
+        for(int i=0; i<tableRows.length; i++){
+            String row = tableRows[i].toString().trim();
+            String[] collectedRow = row.split("/");
+            for(int j=0; j<collectedRow.length; j++){
+                if (collectedRow[j].equals(ID)){
+                    String docID = collectedRow[1];
+                    String date = collectedRow[2];
+                    appointments.append(docID + ", " + date + "\n");
+                }
+                else{
+                    //System.out.println("Fail");
                 }
             }
-        }
-        catch (Exception exception){
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, exception);
         }
     }
     
     public void getDoctorRatings(){
-        System.out.println(patientID);
-        String appFile = "Accounts.txt";
-        File appts = new File(appFile);
-        
-        try{
-            BufferedReader reader = new BufferedReader(new FileReader(appts));
-            Object[] apptTableRows = reader.lines().toArray();
+        readFile("Accounts.txt");
             
-            for(int i=1; i<apptTableRows.length; i++){
-                String row = apptTableRows[i].toString().trim();
-                String[] collectedRow = row.split("/");
-                for(int j=0; j<collectedRow.length; j++){
-                    System.out.println(collectedRow[j]);
-                    if (collectedRow[j].equals("Doctor")){
+        for(int i=1; i<tableRows.length; i++){
+            String row = tableRows[i].toString().trim();
+            String[] collectedRow = row.split("/");
+            for(int j=0; j<collectedRow.length; j++){
+                if (collectedRow[j].equals("Doctor")){
                         
-                        String docID = collectedRow[1];                        
-                        String docFN = collectedRow[3];
-                        String docSN = collectedRow[4];
-                        System.out.println("xxxxxx " +docID);
+                    String docID = collectedRow[1];                        
+                    String docFN = collectedRow[3];
+                    String docSN = collectedRow[4];
                         
-                        doctorRatings.append(docID + ", Dr. " + docFN + " " + docSN + ", " + getAvgRating(docID) +"\n");
-                    }
-                    else{
-                        //System.out.println("Fail");
-                    }
+                    doctorRatings.append(docID + ", Dr. " + docFN + " " + docSN + ", " + getAvgRating(docID) +"\n");
                 }
             }
-        }
-        catch (Exception exception){
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, exception);
         }
     }
     
     public float getAvgRating(String id){
-        String rateFile = "DoctorRatings.txt";
-        File rates = new File(rateFile);
+        
+        readFile("DoctorRatings.txt");
+        
         List<Integer> sample = new ArrayList<Integer>();
         float value = 0.0f;
-        
-        try{
-            BufferedReader reader = new BufferedReader(new FileReader(rates));
-            Object[] ratesTableRows = reader.lines().toArray();
             
-            for(int i=1; i<ratesTableRows.length; i++){
-                String row = ratesTableRows[i].toString().trim();
-                String[] collectedRow = row.split("/");
-                for(int j=0; j<collectedRow.length; j++){
-                    System.out.println(collectedRow[j]);
-                    if (collectedRow[j].equals(id)){
-                        sample.add(parseInt(collectedRow[j+1]));
-                        System.out.println("xxxxxx " +sample);
-                    }
-                    else{
-                        //System.out.println("Fail");
-                    }
+        for(int i=1; i<tableRows.length; i++){
+            String row = tableRows[i].toString().trim();
+            String[] collectedRow = row.split("/");
+            for(int j=0; j<collectedRow.length; j++){
+                if (collectedRow[j].equals(id)){
+                    sample.add(parseInt(collectedRow[j+1]));
                 }
-            }            
-            for (int i = 0; i<sample.size(); i++){
-                value += sample.get(i);
             }
-            value = value/sample.size();
-            return value;
+        }            
+        for (int i = 0; i<sample.size(); i++){
+            value += sample.get(i);
         }
-        catch (Exception exception){
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, exception);
-        }
+        value = value/sample.size();
         return value;
+    }
+    
+    public void getMessages(){
+        readFile("Messages.txt");
+        
+         for(int i=1; i<tableRows.length; i++){
+            String row = tableRows[i].toString().trim();
+            String[] collectedRow = row.split("/");
+            for(int j=0; j<collectedRow.length; j++){
+                if (collectedRow[j].equals(ID)){
+                    messages.append("From " + findUser(collectedRow[0]) + ": " + collectedRow[2] + " | " + collectedRow[3] + "\n");
+                    readFile("Messages.txt");
+                }
+            }
+        }        
+    }
+    
+    public void getPrescriptions(){
+        readFile("Prescriptions.txt");
+        
+        for(int i=1; i<tableRows.length; i++){
+            String row = tableRows[i].toString().trim();
+            String[] collectedRow = row.split("/");
+            for(int j=0; j<collectedRow.length; j++){
+                if (collectedRow[j].equals(ID)){
+                    prescriptions.append(collectedRow[2] + " x " + findMedicine(parseInt(collectedRow[1])) + ", " + collectedRow[3]);
+                    readFile("Prescriptions.txt");
+                }
+            }
+        }  
     }
 
     /**
@@ -223,12 +159,12 @@ public class PatientInterface extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        LogoutButton = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        prescriptions = new javax.swing.JTextArea();
         jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -255,7 +191,12 @@ public class PatientInterface extends javax.swing.JFrame {
 
         jButton2.setText("Request Account Termination");
 
-        jButton3.setText("Log Out");
+        LogoutButton.setText("Log Out");
+        LogoutButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LogoutButtonActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Doctors and ratings");
 
@@ -263,9 +204,9 @@ public class PatientInterface extends javax.swing.JFrame {
 
         jLabel5.setText("Your messages");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane4.setViewportView(jTextArea1);
+        prescriptions.setColumns(20);
+        prescriptions.setRows(5);
+        jScrollPane4.setViewportView(prescriptions);
 
         jLabel6.setText("Your prescriptions");
 
@@ -285,25 +226,20 @@ public class PatientInterface extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(doctorID)
+                                            .addComponent(appointmentDate, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                    .addComponent(doctorID)
-                                                    .addComponent(appointmentDate, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jLabel1)
-                                                    .addComponent(jLabel2)))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(46, 46, 46)
-                                                .addComponent(jButton1)))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                            .addComponent(jLabel1)
+                                            .addComponent(jLabel2)))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jButton2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                        .addGap(46, 46, 46)
+                                        .addComponent(jButton1))
+                                    .addComponent(jButton2))
                                 .addGap(10, 10, 10)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jButton3)
+                                    .addComponent(LogoutButton)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -358,13 +294,17 @@ public class PatientInterface extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jButton2)
-                                    .addComponent(jButton3)))))
+                                    .addComponent(LogoutButton)))))
                     .addComponent(jScrollPane1))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void LogoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogoutButtonActionPerformed
+        Logout();
+    }//GEN-LAST:event_LogoutButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -402,13 +342,13 @@ public class PatientInterface extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton LogoutButton;
     private javax.swing.JTextField appointmentDate;
     private javax.swing.JTextArea appointments;
     private javax.swing.JTextField doctorID;
     private javax.swing.JTextArea doctorRatings;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -419,7 +359,7 @@ public class PatientInterface extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea messages;
+    private javax.swing.JTextArea prescriptions;
     // End of variables declaration//GEN-END:variables
 }

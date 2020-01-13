@@ -22,6 +22,8 @@ import gui.PatientInterface;
  * @author rowse
  */
 public class Login extends javax.swing.JFrame {
+    
+    Object[] tableRows;
 
     public String userType = null; 
     /**
@@ -29,89 +31,69 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
-        //BringFromFile();
     }
     
-    public void BringFromFile(){
-        String userFile = "Accounts.txt";
-        File users = new File(userFile);
+    public void readFile(String fileName){
+    String userFile = fileName;
+    File users = new File(userFile);
         
-        try{
-            BufferedReader reader = new BufferedReader(new FileReader(users));
-            //String firstLine = reader.readLine().trim();
-            //String[] identifier = firstLine.split("/");
-            //DefaultTableModel tableModel = (DefaultTableModel)accountsTable.getModel();
-            //tableModel.setColumnIdentifiers(identifier);
-            
-            Object[] userTableRows = reader.lines().toArray();
-            
-            for(int i=0; i<userTableRows.length; i++){
-                String row = userTableRows[i].toString().trim();
-                String[] collectedRow = row.split("/");
-                //tableModel.addRow(collectedRow);
-            }
+    try{
+        BufferedReader reader = new BufferedReader(new FileReader(users));
+        tableRows = reader.lines().toArray(); //put all rows into an array
         }
-        catch (Exception exception){
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, exception);
-        }
+    catch (Exception exception){
+        Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, exception);
     }
-    
+    }
+        
     public Boolean CheckCredentials(String id, String pw){ //id = usernameTextField.getText(), pw = passwordTextField.getText()
-        String userFile = "Accounts.txt";
-        File users = new File(userFile);
         
-        try{
-            BufferedReader reader = new BufferedReader(new FileReader(users));
-            Object[] userTableRows = reader.lines().toArray(); //put all rows into an array
-            
-            for(int i=0; i<userTableRows.length; i++){ //for each row...
-                String row = userTableRows[i].toString().trim();
-                String[] collectedRow = row.split("/"); //... split each datum into another array, splitting them at "/"
-                for(int j=0; j<collectedRow.length; j++){ //for each string in row i...
-                    if (collectedRow[j].equals(id) && collectedRow[j+1].equals(pw)){ //if one string = id AND the one after it = pw...
-                        //System.out.println("Success");
-                        userType = collectedRow[0]; //...select the current row and save it for later
-                        return true;
-                    }
-                    else{
-                        //System.out.println("Fail");
-                    }
+        readFile("Accounts.txt");
+        for(int i=0; i<tableRows.length; i++){ //for each row...
+            String row = tableRows[i].toString().trim();
+            String[] collectedRow = row.split("/"); //... split each datum into another array, splitting them at "/"
+            for(int j=0; j<collectedRow.length; j++){ //for each string in row i...
+                if (collectedRow[j].equals(id) && collectedRow[j+1].equals(pw)){ //if one string = id AND the one after it = pw...
+                    //System.out.println("Success");
+                    userType = collectedRow[0]; //...select the current row and save it for later
+                    return true;
+                }
+                else{
                 }
             }
-        }
-        catch (Exception exception){
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, exception);
         }
         return false;
     }
     
     public void SwitchToPatient(String id){ //do this for all user types
         PatientInterface p = new PatientInterface();
-        p.setPatientID(usernameField.getText());
-        System.out.println("wwwwww " + p.patientID);
+        p.setID(usernameField.getText());
+        System.out.println("wwwwww " + p.ID);
         p.getAppointments();
         p.getDoctorRatings(); //put all the "read" functions for the corresponding user type here
+        p.getMessages();
+        p.getPrescriptions();
         p.setVisible(true);
         this.dispose();
     }
     
     public void SwitchToSecretary(String id){
         SecretaryInterface p = new SecretaryInterface();
-        p.secretaryID = usernameField.getText();
+        p.ID = usernameField.getText();
         p.setVisible(true);
         this.dispose();
     }
     
     public void SwitchToDoctor(String id){
         DoctorInterface p = new DoctorInterface();
-        p.doctorID = usernameField.getText();
+        p.ID = usernameField.getText();
         p.setVisible(true);
         this.dispose();
     }
     
     public void SwitchToAdministrator(String id){
         AdminInterface p = new AdminInterface();
-        p.adminID = usernameField.getText();
+        p.ID = usernameField.getText();
         p.setVisible(true);
         this.dispose();
     }
