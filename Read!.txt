@@ -1,0 +1,10 @@
+GitHub Repo:
+https://github.com/Tuinsomatic/ClinicSystem
+
+
+Note:
+I'm not entirely sure what happened with my NetBeans, but I didn't have the build
+options NB 8.2 should have! (I was using NB 8.2, not 11.2)! I've selected Login as 
+my main class, built the project and created a .jar file (located in the target folder).
+
+It should still run fine, though the folder structure is a little different.
