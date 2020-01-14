@@ -6,8 +6,12 @@
 package gui;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -116,6 +120,57 @@ public class User extends javax.swing.JFrame {
         catch (Exception exception){
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, exception);
         }
+    }
+    
+    public void writeFile(String fileName, String text){
+        File file = new File(fileName);
+        
+        try{
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+            writer.newLine();
+            writer.write(text);
+            writer.close();
+        }
+        catch (IOException exception){
+            System.out.println("Error writing to file");
+        }
+    }
+    
+    public void deleteFile(String fileName, String row){
+        File oldFile = new File(fileName);
+        File newFile = new File("1" + fileName);
+        
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(fileName));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(newFile));
+            
+            String current;
+            while((current = reader.readLine()) != null){
+                String trimmed = current.trim();
+                if (trimmed.equals(row)){
+                    continue;
+                }
+                writer.write(current + System.getProperty("line.separator"));
+            }
+            
+            writer.close();
+            reader.close();
+            
+            BufferedReader reader2 = new BufferedReader(new FileReader(newFile));
+            BufferedWriter writer2 = new BufferedWriter(new FileWriter(fileName));
+            
+            String current2;
+            while((current2 = reader2.readLine()) != null){
+                String trimmed = current2.trim();
+                writer2.write(current2 + System.getProperty("line.separator"));
+            }
+            
+            writer2.close();
+            reader2.close();
+        } catch (Exception ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        newFile.delete();
     }
     
     public String findUser(String id){

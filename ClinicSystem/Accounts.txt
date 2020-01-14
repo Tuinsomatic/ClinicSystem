@@ -1,6 +1,6 @@
 Class/ID/Password/FirstName/LastName/Address/Postcode/Age/Gender
 Administrator/A1/password/Macky/Gee/69 Tour Lane/OO6 6OO/39/Male
-Secretary/S1/lynyrdskynyrd/Ashat/McGee/Mars, I think./SS5 5SS/22/Male
-Doctor/D1/sonicisameanie/Eggman/Robotnik/4 Marble Way/SH26 2DE/94/Male
-Patient/P1/rhythmisadancer123/Sans/Undertale/7.../UY8 2YS/2/Female
+Secretary/S1/1/Ashat/McGee/Mars, I think./SS5 5SS/22/Male
+Doctor/D1/sonic/Eggman/Robotnik/4 Marble Way/SH26 2DE/94/Male
+Patient/P1/1/Sans/Undertale/Dur Lane/DDD DDD/4/Female
 Patient/P2/'.[,#]]/.../......../5 ££& *(("%/*(4 12)*/62/Female

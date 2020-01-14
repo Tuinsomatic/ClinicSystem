@@ -23,8 +23,7 @@ import gui.PatientInterface;
  */
 public class Login extends javax.swing.JFrame {
     
-    Object[] tableRows;
-
+    Object[] tableRows = null;
     public String userType = null; 
     /**
      * Creates new form Login
@@ -68,33 +67,39 @@ public class Login extends javax.swing.JFrame {
     public void SwitchToPatient(String id){ //do this for all user types
         PatientInterface p = new PatientInterface();
         p.setID(usernameField.getText());
-        System.out.println("wwwwww " + p.ID);
         p.getAppointments();
         p.getDoctorRatings(); //put all the "read" functions for the corresponding user type here
         p.getMessages();
         p.getPrescriptions();
+        p.getHistory();
         p.setVisible(true);
         this.dispose();
     }
     
     public void SwitchToSecretary(String id){
-        SecretaryInterface p = new SecretaryInterface();
-        p.ID = usernameField.getText();
-        p.setVisible(true);
+        SecretaryInterface s = new SecretaryInterface();
+        s.ID = usernameField.getText();
+        s.GetAccRequests();
+        s.GetApptRequests();
+        s.GetRemovalRequests();
+        s.getMedicines();
+        s.setVisible(true);
         this.dispose();
     }
     
     public void SwitchToDoctor(String id){
-        DoctorInterface p = new DoctorInterface();
-        p.ID = usernameField.getText();
-        p.setVisible(true);
+        DoctorInterface d = new DoctorInterface();
+        d.ID = usernameField.getText();
+        d.setVisible(true);
+        d.getAppointments();
+        d.getMedicines();
         this.dispose();
     }
     
     public void SwitchToAdministrator(String id){
-        AdminInterface p = new AdminInterface();
-        p.ID = usernameField.getText();
-        p.setVisible(true);
+        AdminInterface a = new AdminInterface();
+        a.ID = usernameField.getText();
+        a.setVisible(true);
         this.dispose();
     }
 
@@ -215,9 +220,13 @@ public class Login extends javax.swing.JFrame {
                 System.out.println("Secretary");
                 SwitchToSecretary(usernameField.getText());
             }
-            else{
+            else if ("Doctor".equals(userType)){
                 System.out.println("Doctor");
                 SwitchToDoctor(usernameField.getText());
+            }
+            else{
+                usernameField.setText("");
+                passwordField.setText("");
             }
         
     }//GEN-LAST:event_loginButtonActionPerformed
