@@ -1,3 +1,3 @@
 From/To/Message/Date
-D1/P1/You suck/20.12.2019
-S1/P2/Pick up your damn meds!/5.4.19
+D3/P5/You're sick/20.12.2019
+D4/P6/Pick up your darn meds!/05.04.2019

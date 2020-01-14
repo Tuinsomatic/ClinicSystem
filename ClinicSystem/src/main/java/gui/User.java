@@ -188,7 +188,7 @@ public class User extends javax.swing.JFrame {
         return ("not found");
     }
     
-    public String findMedicine(Integer id){
+    public String findMedicine(String id){
         readFile("Medicine.txt");
         
         for(int i=1; i<tableRows.length; i++){
@@ -196,7 +196,7 @@ public class User extends javax.swing.JFrame {
             String[] collectedRow = row.split("/");
             for(int j=0; j<collectedRow.length; j++){
                 if (collectedRow[j].equals(id.toString())){
-                    return (collectedRow[1]);
+                    return (collectedRow[0]);
                 }
             }
         } 

@@ -1,4 +1,4 @@
 Name/Quantity
-Leth/342607
-Neth/367
-Mets/44
+Paracetamol/50
+BigRedMushroom/12
+Shots/34

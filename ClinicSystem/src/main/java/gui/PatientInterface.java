@@ -129,7 +129,7 @@ public class PatientInterface extends User {
             String[] collectedRow = row.split("/");
             for(int j=0; j<collectedRow.length; j++){
                 if (collectedRow[j].equals(ID)){
-                    prescriptions.append(collectedRow[2] + " x " + findMedicine(parseInt(collectedRow[1])) + ", " + collectedRow[3]);
+                    prescriptions.append(collectedRow[2] + " x " + findMedicine(collectedRow[1]) + ", " + collectedRow[3]);
                     readFile("Prescriptions.txt");
                 }
             }

@@ -28,7 +28,7 @@ public class SecretaryInterface extends User {
         readFile("Account Requests.txt");
                 
         for(int i=1; i<tableRows.length; i++){
-           accountRequests.append((String) tableRows[i] + "\n");
+           accountRequests.addItem((String) tableRows[i]);
         }    
     }
     
@@ -111,6 +111,17 @@ public class SecretaryInterface extends User {
             medicines.append("(in stock)\n");   
         }
     }
+    
+    public void acceptAccReq(){
+        readFile("Accounts.txt");
+        
+        String newID = "P" + (tableRows.length);
+        
+        writeFile("Accounts.txt", "Patient/" + newID + "/" + (String) accountRequests.getSelectedItem());
+        deleteFile("Account Requests.txt", (String) accountRequests.getSelectedItem());
+        accountRequests.removeAllItems();
+        GetAccRequests();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -121,8 +132,6 @@ public class SecretaryInterface extends User {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        accountRequests = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -145,12 +154,10 @@ public class SecretaryInterface extends User {
         jLabel8 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         medicines = new javax.swing.JTextArea();
+        accountRequests = new javax.swing.JComboBox<>();
+        acceptReqButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        accountRequests.setColumns(20);
-        accountRequests.setRows(5);
-        jScrollPane1.setViewportView(accountRequests);
 
         jLabel1.setText("Account Requests");
 
@@ -205,6 +212,13 @@ public class SecretaryInterface extends User {
         medicines.setRows(5);
         jScrollPane2.setViewportView(medicines);
 
+        acceptReqButton.setText("Approve Request");
+        acceptReqButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                acceptReqButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -247,7 +261,11 @@ public class SecretaryInterface extends User {
                         .addGap(547, 547, 547)
                         .addComponent(jLabel3))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(accountRequests, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(acceptReqButton)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -269,15 +287,17 @@ public class SecretaryInterface extends User {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(removalRequests, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(removeAccountButton)))
+                        .addComponent(removeAccountButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(accountRequests, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(acceptReqButton)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
@@ -323,6 +343,10 @@ public class SecretaryInterface extends User {
         StockMedicine();
     }//GEN-LAST:event_stockButtonActionPerformed
 
+    private void acceptReqButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acceptReqButtonActionPerformed
+        acceptAccReq();
+    }//GEN-LAST:event_acceptReqButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -360,7 +384,8 @@ public class SecretaryInterface extends User {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton LogoutButton;
-    private javax.swing.JTextArea accountRequests;
+    private javax.swing.JButton acceptReqButton;
+    private javax.swing.JComboBox<String> accountRequests;
     private javax.swing.JTextArea appointmentRequests;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -371,7 +396,6 @@ public class SecretaryInterface extends User {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField jTextField2;
